@@ -1,0 +1,15 @@
+alarm_control_panel:
+  - platform: manual
+    name: Alarm panel 1
+    arming_time: 5
+  - platform: manual
+    name: Alarm panel 2
+    arming_time: 5
+  - platform: manual
+    name: Alarm panel code
+    code: 1234
+    arming_time: 5
+  - platform: manual
+    name: Alarm panel text code
+    code: azerty
+    arming_time: 5
