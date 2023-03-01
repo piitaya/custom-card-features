@@ -2,7 +2,7 @@ import { HassEntity } from "home-assistant-js-websocket";
 import { css, html, LitElement } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
-import { HomeAssistant } from "../ha/types";
+import { HomeAssistant } from "../ha";
 
 const supportProgressTileFeature = (stateObj) => {
     const domain = stateObj.entity_id.split(".")[0];
@@ -94,7 +94,7 @@ const windowWithCards = window as unknown as Window & {
 windowWithCards.customTileFeatures = windowWithCards.customTileFeatures || [];
 windowWithCards.customTileFeatures.push({
     type: "progress-tile-feature",
-    name: "Progress Bar",
+    name: "Progress Bar 🍄",
     supported: supportProgressTileFeature, // Optional
     configurable: false, // Optional - defaults to false
 });
