@@ -1,5 +1,5 @@
 import { HassEntity } from "home-assistant-js-websocket";
-import { css, html, LitElement } from "lit";
+import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { styleMap } from "lit/directives/style-map.js";
 import { HomeAssistant } from "../ha";
@@ -31,7 +31,7 @@ export class ProgressTileFeature extends LitElement {
             !this.stateObj ||
             !supportProgressTileFeature(this.stateObj)
         ) {
-            return null;
+            return nothing;
         }
 
         const state = Number(this.stateObj.state);

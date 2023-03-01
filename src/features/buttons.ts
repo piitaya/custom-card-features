@@ -41,7 +41,7 @@ export class ButtonsTileFeature extends LitElement {
 
     render() {
         if (!this.config || !this.hass || !this.stateObj) {
-            return null;
+            return nothing;
         }
 
         const buttonsStateObj = this.config.buttons
