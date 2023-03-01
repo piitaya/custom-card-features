@@ -39,3 +39,6 @@ update:
 
 device_tracker:
   - platform: demo
+
+button:
+  - platform: demo
