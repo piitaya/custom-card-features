@@ -33,7 +33,7 @@ const plugins = [
 
 export default [
     {
-        input: "src/tile-features.ts",
+        input: "src/card-features.ts",
         output: {
             dir: "dist",
             format: "es",
