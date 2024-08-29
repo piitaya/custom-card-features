@@ -10,7 +10,7 @@ export type ButtonsCardFeatureConfig = LovelaceCardConfig & {
 export const buttonsCardFeatureConfigSchema: HaFormSchema[] = [
   {
     name: "buttons",
-    selector: { entity: { domain: "button", multiple: true } },
+    selector: { entity: { domain: ["button", "script"], multiple: true } },
   },
 ];
 

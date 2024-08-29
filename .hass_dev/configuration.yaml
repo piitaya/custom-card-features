@@ -14,4 +14,4 @@ frontend:
   themes: !include_dir_merge_named themes
 #   development_repo: /workspaces/home-assistant-frontend
   extra_module_url:
-    - http://localhost:4000/tile-features.js
+    - http://localhost:4000/card-features.js

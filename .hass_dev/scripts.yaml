@@ -1,0 +1,8 @@
+new_script:
+  alias: New Script
+  sequence:
+  - action: persistent_notification.create
+    metadata: {}
+    data:
+      message: test
+  description: ''

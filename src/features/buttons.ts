@@ -37,9 +37,19 @@ export class ButtonsCardFeature extends LitElement {
 
   private _click(ev) {
     const entityId = ev.target.entityId;
-    this.hass?.callService("button", "press", {
-      entity_id: entityId,
-    });
+    const domain = entityId.split(".")[0];
+    if (domain === "button") {
+      this.hass?.callService("button", "press", {
+        entity_id: entityId,
+      });
+      return;
+    }
+    if (domain === "script") {
+      this.hass?.callService("script", "turn_on", {
+        entity_id: entityId,
+      });
+      return;
+    }
   }
 
   render() {
