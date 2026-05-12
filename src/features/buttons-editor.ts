@@ -1,7 +1,11 @@
 import { html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
 import { assert } from "superstruct";
-import { fireEvent, HomeAssistant, LovelaceCardEditor } from "../ha";
+import {
+  fireEvent,
+  HomeAssistant,
+  LovelaceCardFeatureEditor,
+} from "../ha";
 import { HaFormSchema } from "../utils/form/ha-form";
 import { loadHaComponents } from "../utils/loader";
 import {
@@ -13,7 +17,7 @@ import {
 @customElement("buttons-card-feature-editor")
 export class ButtonsCardFeatureEditor
   extends LitElement
-  implements LovelaceCardEditor
+  implements LovelaceCardFeatureEditor
 {
   @property({ attribute: false }) public hass!: HomeAssistant;
 

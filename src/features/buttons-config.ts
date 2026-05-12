@@ -1,9 +1,10 @@
 import { array, assign, object, optional, string } from "superstruct";
-import { LovelaceCardConfig } from "../ha/data/lovelace";
+import { LovelaceCardFeatureConfig } from "../ha";
 import { HaFormSchema } from "../utils/form/ha-form";
-import { lovelaceCardConfigStruct } from "../utils/structs/lovelace-card-config";
+import { customType } from "../utils/structs/is-custom-type";
 
-export type ButtonsCardFeatureConfig = LovelaceCardConfig & {
+export type ButtonsCardFeatureConfig = LovelaceCardFeatureConfig & {
+  type: "custom:buttons-card-feature";
   buttons?: string[];
 };
 
@@ -15,7 +16,9 @@ export const buttonsCardFeatureConfigSchema: HaFormSchema[] = [
 ];
 
 export const buttonsCardFeatureConfigStruct = assign(
-  lovelaceCardConfigStruct,
+  object({
+    type: customType(),
+  }),
   object({
     buttons: optional(array(string())),
   })
