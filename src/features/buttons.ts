@@ -1,25 +1,36 @@
 import { HassEntity } from "home-assistant-js-websocket";
 import { css, html, LitElement, nothing } from "lit";
 import { customElement, property, state } from "lit/decorators.js";
-import { classMap } from "lit/directives/class-map.js";
 import { repeat } from "lit/directives/repeat.js";
-import { HomeAssistant, LovelaceCardEditor } from "../ha";
-import { atLeastHaVersion } from "../utils/utils";
+import {
+  HomeAssistant,
+  LovelaceCardFeature,
+  LovelaceCardFeatureContext,
+  LovelaceCardFeatureEditor,
+  LovelaceCardFeaturePosition,
+} from "../ha";
 import { ButtonsCardFeatureConfig } from "./buttons-config";
 
 @customElement("buttons-card-feature")
-export class ButtonsCardFeature extends LitElement {
+export class ButtonsCardFeature
+  extends LitElement
+  implements LovelaceCardFeature
+{
   @property({ attribute: false }) public hass?: HomeAssistant;
 
-  @property({ attribute: false }) public stateObj?: HassEntity;
+  @property({ attribute: false }) public context?: LovelaceCardFeatureContext;
 
-  @state() public config!: ButtonsCardFeatureConfig;
+  @property() public color?: string;
 
-  public static async getConfigElement(): Promise<LovelaceCardEditor> {
+  @property() public position?: LovelaceCardFeaturePosition;
+
+  @state() private _config?: ButtonsCardFeatureConfig;
+
+  public static async getConfigElement(): Promise<LovelaceCardFeatureEditor> {
     await import("./buttons-editor");
     return document.createElement(
       "buttons-card-feature-editor"
-    ) as LovelaceCardEditor;
+    ) as LovelaceCardFeatureEditor;
   }
 
   static getStubConfig(): ButtonsCardFeatureConfig {
@@ -28,47 +39,41 @@ export class ButtonsCardFeature extends LitElement {
     };
   }
 
-  setConfig(config) {
+  public setConfig(config: ButtonsCardFeatureConfig): void {
     if (!config) {
       throw new Error("Invalid configuration");
     }
-    this.config = config;
+    this._config = config;
   }
 
-  private _click(ev) {
+  private _click(ev: Event & { target: HTMLElement & { entityId: string } }) {
     const entityId = ev.target.entityId;
     const domain = entityId.split(".")[0];
     if (domain === "button") {
-      this.hass?.callService("button", "press", {
-        entity_id: entityId,
-      });
+      this.hass?.callService("button", "press", { entity_id: entityId });
       return;
     }
     if (domain === "script") {
-      this.hass?.callService("script", "turn_on", {
-        entity_id: entityId,
-      });
+      this.hass?.callService("script", "turn_on", { entity_id: entityId });
       return;
     }
   }
 
-  render() {
-    if (!this.config || !this.hass || !this.stateObj) {
+  protected render() {
+    if (!this._config || !this.hass) {
       return nothing;
     }
 
-    const buttonsStateObj = this.config.buttons
+    const buttonsStateObj = this._config.buttons
       ?.map((entityId) => this.hass!.states[entityId])
-      .filter(Boolean);
+      .filter((stateObj): stateObj is HassEntity => Boolean(stateObj));
 
-    if (!buttonsStateObj) return nothing;
-
-    const padding = !atLeastHaVersion(this.hass.config.version, 2024, 8);
+    if (!buttonsStateObj?.length) return nothing;
 
     return html`
-      <ha-control-button-group class=${classMap({ padding })}>
+      <ha-control-button-group>
         ${repeat(
-          buttonsStateObj!,
+          buttonsStateObj,
           (stateObj) => stateObj.entity_id,
           (stateObj) =>
             html`
@@ -91,9 +96,6 @@ export class ButtonsCardFeature extends LitElement {
       ha-control-button-group {
         --control-button-group-spacing: var(--feature-button-spacing, 12px);
         --control-button-group-thickness: var(--feature-height, 40px);
-      }
-      ha-control-button-group.padding {
-        margin: 0 12px 12px 12px;
       }
     `;
   }

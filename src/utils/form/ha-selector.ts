@@ -4,8 +4,10 @@ export type Selector =
   | ActionSelector
   | AddonSelector
   | AreaSelector
+  | AreasDisplaySelector
   | AttributeSelector
   | BooleanSelector
+  | ButtonToggleSelector
   | ColorRGBSelector
   | ColorTempSelector
   | DateSelector
@@ -13,18 +15,23 @@ export type Selector =
   | DeviceSelector
   | DurationSelector
   | EntitySelector
+  | FloorSelector
   | IconSelector
   | LocationSelector
   | MediaSelector
   | NumberSelector
+  | NumericThresholdSelector
   | ObjectSelector
+  | PeriodSelector
   | SelectSelector
   | StringSelector
   | TargetSelector
   | TemplateSelector
   | ThemeSelector
   | TimeSelector
-  | UiActionSelector;
+  | UiActionSelector
+  | UiColorSelector
+  | UiStateContentSelector;
 
 export interface ActionSelector {
   // eslint-disable-next-line @typescript-eslint/ban-types
@@ -236,5 +243,51 @@ export type UiAction = Exclude<ActionConfig["action"], "fire-dom-event">;
 export interface UiActionSelector {
   "ui-action": {
     actions?: UiAction[];
+  } | null;
+}
+
+export interface AreasDisplaySelector {
+  areas_display: {} | null;
+}
+
+export interface ButtonToggleSelector {
+  button_toggle: {
+    options: string[] | SelectOption[];
+  };
+}
+
+export interface FloorSelector {
+  floor: {
+    entity?: EntitySelector["entity"];
+    device?: DeviceSelector["device"];
+    multiple?: boolean;
+  } | null;
+}
+
+export interface NumericThresholdSelector {
+  numeric_state: {
+    min?: number;
+    max?: number;
+    step?: number;
+    unit_of_measurement?: string;
+  } | null;
+}
+
+export interface PeriodSelector {
+  period: {} | null;
+}
+
+export interface UiColorSelector {
+  ui_color: {
+    default_color?: string;
+    include_state?: boolean;
+    include_none?: boolean;
+  } | null;
+}
+
+export interface UiStateContentSelector {
+  ui_state_content: {
+    entity_id?: string;
+    allow_name?: boolean;
   } | null;
 }
