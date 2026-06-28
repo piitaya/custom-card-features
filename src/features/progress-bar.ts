@@ -162,6 +162,9 @@ export class ProgressBarCardFeature
 
   static get styles() {
     return css`
+      :host {
+        pointer-events: none !important;
+      }
       .container {
         container-type: inline-size;
         position: relative;
